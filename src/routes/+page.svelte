@@ -45,7 +45,7 @@
 	let voiceIndex = 0;
 
 	// Constants
-	const progressIncrement = 100;
+	const progressIncrement = 10;
 
 	onMount(() => {
 		audio = new Audio();
