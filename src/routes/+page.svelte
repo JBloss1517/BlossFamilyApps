@@ -176,7 +176,7 @@
 	}
 
 	function spellingCorrect() {
-		if (value.toLowerCase() === word.toLowerCase()) {
+		if (value.toLowerCase().trim() === word.toLowerCase().trim()) {
 			spellingError = false;
 			return true;
 		} else {
