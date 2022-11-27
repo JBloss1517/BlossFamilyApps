@@ -1,18 +1,7 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import { browser } from '$app/environment';
 
-	import {
-		Title,
-		Group,
-		Stack,
-		Card,
-		Button,
-		Progress,
-		ActionIcon,
-		Text,
-		Modal
-	} from '@svelteuidev/core';
+	import { Title, Group, Stack, Card, Button, Progress, Text, Modal } from '@svelteuidev/core';
 	import { Confetti } from 'svelte-confetti';
 	import { allGradeWords } from '$lib/words';
 	import type * as types from '$lib/types';
@@ -28,7 +17,6 @@
 	let showLevelUpConfetti = false;
 
 	let numberOfTries = 0;
-	let showMessage = false;
 	let showWinnerMessage = false;
 
 	let inputElement;
@@ -86,6 +74,27 @@
 					? examplePartOfSpeechIndex + 1
 					: 0;
 		}
+	}
+
+	function _checkHowCloseWordIs() {
+		let numberOfLetters = word.length;
+		const wordArray = word.split('');
+		const valueArray = value.split('');
+		let numberOfCorrectLetters = 0;
+		for (let i = 0; i < wordArray.length; i++) {
+			if (wordArray[i] === valueArray[i]) {
+				numberOfCorrectLetters = numberOfCorrectLetters + 1;
+			}
+		}
+		let textMessage = '';
+		if (numberOfCorrectLetters / numberOfLetters > 0.8) {
+			textMessage += `You were very close, give it one more shot! You have ${numberOfCorrectLetters} correct letters out of ${numberOfLetters} letters`;
+		} else if (numberOfCorrectLetters > 0.6) {
+			textMessage += `Not Bad, give it one more shot! You have ${numberOfCorrectLetters} correct letters out of ${numberOfLetters} letters`;
+		} else {
+			textMessage += `Give it one more shot! You have ${numberOfCorrectLetters} correct letters out of ${numberOfLetters} letters`;
+		}
+		return textMessage;
 	}
 
 	async function nextWord() {
@@ -198,7 +207,6 @@
 				}
 			} else {
 				if (numberOfTries >= 3) {
-					showMessage = true;
 					nextWord();
 				}
 				spellingError = true;
@@ -302,7 +310,7 @@
 					Enter the spelling word and click check
 				</Text>
 			{:else if numberOfTries == 1}
-				<Text variant="gradient" override={{ lineHeight: '1.5em' }}>Give it one more shot</Text>
+				<Text variant="gradient" override={{ lineHeight: '1.5em' }}>{_checkHowCloseWordIs()}</Text>
 			{:else}
 				<Text override={{ lineHeight: '1.5em' }}
 					>The word is
