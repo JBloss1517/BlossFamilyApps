@@ -186,24 +186,26 @@
 	}
 
 	function checkSpelling() {
-		numberOfTries += 1;
-		if (spellingCorrect()) {
-			progress += progressIncrement;
-			value = '';
-			if (progress >= 100) {
-				nextGrade();
+		if (value !== '') {
+			numberOfTries += 1;
+			if (spellingCorrect()) {
+				progress += progressIncrement;
+				value = '';
+				if (progress >= 100) {
+					nextGrade();
+				} else {
+					nextWord();
+				}
 			} else {
-				nextWord();
-			}
-		} else {
-			if (numberOfTries >= 3) {
-				showMessage = true;
-				nextWord();
-			}
-			spellingError = true;
-			progress -= progressIncrement;
-			if (progress < 0) {
-				progress = 0;
+				if (numberOfTries >= 3) {
+					showMessage = true;
+					nextWord();
+				}
+				spellingError = true;
+				progress -= progressIncrement;
+				if (progress < 0) {
+					progress = 0;
+				}
 			}
 		}
 		inputElement.focus();
@@ -302,7 +304,12 @@
 			{:else if numberOfTries == 1}
 				<Text variant="gradient" override={{ lineHeight: '1.5em' }}>Give it one more shot</Text>
 			{:else}
-				<Text variant="gradient" override={{ lineHeight: '1.5em' }}>The word is {word}</Text>
+				<Text override={{ lineHeight: '1.5em' }}
+					>The word is
+					<Text variant="gradient" root="span" override={{ fontSize: 26, fontWeight: 'bold' }}
+						>{word}</Text
+					>
+				</Text>
 			{/if}
 		</Stack>
 	</Card>
@@ -339,7 +346,7 @@
 
 	input {
 		color: black;
-		width: 350px;
+		max-width: 350px;
 		border: 0px;
 		border-bottom: 2px solid lightgray;
 		font-size: x-large;

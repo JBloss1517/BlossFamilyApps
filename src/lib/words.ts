@@ -46,7 +46,6 @@ const _1st = [
 	'nest',
 	'rest',
 	'test',
-	'id',
 	'did',
 	'hid',
 	'lid',
